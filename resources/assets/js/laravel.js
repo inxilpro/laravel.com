@@ -186,15 +186,11 @@ $(function() {
         $favoriteButton.text('+').attr('title', 'Mark ' + version + ' as favorite');
       } else {
         $favoriteButton.text('—').attr('title', 'Remove ' + version + ' as favorite');
-        if ($alert) {
-          $alert.hide();
-        }
       }
     }
 
     localforage.getItem('favorite-version', function(err, favoriteVersion) {
       if (err) {
-        console.error(err);
         return;
       }
 
@@ -205,14 +201,15 @@ $(function() {
         $('body').append($alert);
       }
 
-      console.log('favorite:' + favoriteVersion);
-
       // Setup button
       refreshFavoriteButton(favoriteVersion);
       $('.favorite').append($favoriteButton);
       $favoriteButton.click(function() {
         localforage.getItem('favorite-version', function(err, favoriteVersion) {
           if (favoriteVersion !== version) {
+            if ($alert) {
+              $alert.hide();
+            }
             localforage.setItem('favorite-version', version, function(err) {
               if (err) {
                 return alert('Unable to set favorite version.');
