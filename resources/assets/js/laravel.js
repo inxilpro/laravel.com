@@ -177,7 +177,7 @@ $(function() {
   }
 
   // Mark as favorite
-  if (version) {
+  if (docs && version) {
     var $alert;
     var $favoriteButton = $('<a id="favoriteButton" role="button" href="#"></a>');
 
@@ -196,8 +196,7 @@ $(function() {
 
       if (favoriteVersion && favoriteVersion !== version) {
         var favoriteUrl = window.location.href.replace('/' + version, '/' + favoriteVersion);
-        $alert = $('<div class="alert">You are viewing documentation for version ' 
-          + version + '! <a href="' + favoriteUrl + '">Switch to version ' + favoriteVersion + '</a></div>');
+        $alert = $('<div class="alert"><a href="' + favoriteUrl + '">Switch to ' + favoriteVersion + ' docs</a></div>');
         $('body').append($alert);
       }
 

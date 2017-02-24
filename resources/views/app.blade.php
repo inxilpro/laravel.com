@@ -68,6 +68,11 @@
 		@if (isset($currentVersion))
 		var version             = '<?php echo $currentVersion; ?>';
 		@endif
+		@if (Request::is('docs*'))
+		var docs = true;
+		@else
+		var docs = false;
+		@endif
 	</script>
 
 	@include('partials.algolia_template')
