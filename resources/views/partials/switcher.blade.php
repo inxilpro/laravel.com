@@ -12,4 +12,5 @@
 			@endforeach
 		</ul>
 	</div>
+	<div class="favorite"></div>
 </div>

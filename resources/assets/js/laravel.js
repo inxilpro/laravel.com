@@ -175,4 +175,62 @@ $(function() {
       current.parent().css('font-weight', 'bold');
     }
   }
+
+  // Mark as favorite
+  if (version) {
+    var $alert;
+    var $favoriteButton = $('<a id="favoriteButton" role="button" href="#"></a>');
+
+    function refreshFavoriteButton(favoriteVersion) {
+      if (favoriteVersion !== version) {
+        $favoriteButton.text('+').attr('title', 'Mark ' + version + ' as favorite');
+      } else {
+        $favoriteButton.text('—').attr('title', 'Remove ' + version + ' as favorite');
+        if ($alert) {
+          $alert.hide();
+        }
+      }
+    }
+
+    localforage.getItem('favorite-version', function(err, favoriteVersion) {
+      if (err) {
+        console.error(err);
+        return;
+      }
+
+      if (favoriteVersion && favoriteVersion !== version) {
+        var favoriteUrl = window.location.href.replace('/' + version, '/' + favoriteVersion);
+        $alert = $('<div class="alert">You are viewing documentation for version ' 
+          + version + '! <a href="' + favoriteUrl + '">Switch to version ' + favoriteVersion + '</a></div>');
+        $('body').append($alert);
+      }
+
+      console.log('favorite:' + favoriteVersion);
+
+      // Setup button
+      refreshFavoriteButton(favoriteVersion);
+      $('.favorite').append($favoriteButton);
+      $favoriteButton.click(function() {
+        localforage.getItem('favorite-version', function(err, favoriteVersion) {
+          if (favoriteVersion !== version) {
+            localforage.setItem('favorite-version', version, function(err) {
+              if (err) {
+                return alert('Unable to set favorite version.');
+              }
+
+              refreshFavoriteButton(version);
+            });
+          } else {
+            localforage.removeItem('favorite-version', function(err) {
+              if (err) {
+                return alert('Unable to remove favorite version.');
+              }
+              
+              refreshFavoriteButton(null);
+            });
+          }
+        });
+      });
+    });
+  }
 });

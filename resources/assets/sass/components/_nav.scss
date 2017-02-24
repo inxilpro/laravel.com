@@ -126,6 +126,14 @@ nav.main {
 				text-align: center;
 			}
 		}
+
+        .favorite {
+            a {
+                margin-left: 8px;
+                font-weight: bold;
+                color: $color__salmon;
+            }
+        }
 	}
 }
 
